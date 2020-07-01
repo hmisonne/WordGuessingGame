@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { FlatGrid } from 'react-native-super-grid';
-import WordButton from './components/WordButton'
+import WordCard from './components/WordCard'
 import WordInput from './components/WordInput'
 import {cardList, playerInfo, roundInfo} from './data'
 import TeamScore from './components/TeamScore'
@@ -75,9 +75,11 @@ export default class App extends React.Component {
           style={styles.gridView}
           spacing={10}
           renderItem={({ item }) => (
-            <View style={[styles.itemContainer, { backgroundColor: item.cardColorId }]}>
-              <Text style={styles.itemName}>{item.name}</Text>
-            </View>  
+            <WordCard
+              key={item.cardId} 
+              onSelectWord={() => this.onSelectWord(item.cardId)}
+              word={item}
+              clueMaster= {playerInfo.clueMaster}/>
             )}
         />
       </View>
@@ -98,17 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flex: 1,
   },
-  itemContainer: {
-    justifyContent: 'flex-end',
-    borderRadius: 5,
-    padding: 10,
-    height: 150,
-  },
-  itemName: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
-  },
+  
   button: {
     alignItems: "center",
     backgroundColor: "#DDDDDD",
@@ -121,15 +113,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-
-     
-
-// {wordSelection.map(word => 
-//   <WordButton
-//     key={word.cardId} 
-//     onSelectWord={() => this.onSelectWord(word.cardId)}
-//     word={word}
-//     clueMaster= {playerInfo.clueMaster}/>
-//   )
-//   }
