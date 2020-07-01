@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-
+import { FlatGrid } from 'react-native-super-grid';
 import WordButton from './components/WordButton'
 import WordInput from './components/WordInput'
 import {cardList, playerInfo, roundInfo} from './data'
@@ -69,14 +69,17 @@ export default class App extends React.Component {
           cards = {purpleCards}
           color='purple'
         /> 
-        {wordSelection.map(word => 
-          <WordButton
-            key={word.cardId} 
-            onSelectWord={() => this.onSelectWord(word.cardId)}
-            word={word}
-            clueMaster= {playerInfo.clueMaster}/>
-          )
-          }
+        <FlatGrid
+          itemDimension={100}
+          data={wordSelection}
+          style={styles.gridView}
+          spacing={10}
+          renderItem={({ item }) => (
+            <View style={[styles.itemContainer, { backgroundColor: item.cardColorId }]}>
+              <Text style={styles.itemName}>{item.name}</Text>
+            </View>  
+            )}
+        />
       </View>
         
     )
@@ -90,6 +93,21 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
     padding: 8,
+  },
+  gridView: {
+    marginTop: 10,
+    flex: 1,
+  },
+  itemContainer: {
+    justifyContent: 'flex-end',
+    borderRadius: 5,
+    padding: 10,
+    height: 150,
+  },
+  itemName: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
   },
   button: {
     alignItems: "center",
@@ -107,3 +125,11 @@ const styles = StyleSheet.create({
 
      
 
+// {wordSelection.map(word => 
+//   <WordButton
+//     key={word.cardId} 
+//     onSelectWord={() => this.onSelectWord(word.cardId)}
+//     word={word}
+//     clueMaster= {playerInfo.clueMaster}/>
+//   )
+//   }
