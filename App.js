@@ -1,21 +1,109 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import Constants from 'expo-constants';
 
-export default function App() {
-  return (
+import WordButton from './components/WordButton'
+import WordInput from './components/WordInput'
+import {cardList, playerInfo, roundInfo} from './data'
+import TeamScore from './components/TeamScore'
+
+export default class App extends React.Component {
+  state = {
+    wordSelection: cardList,
+    roundInfo
+  }
+  onSelectWord = (cardId) => {
+    const {wordSelection} = this.state
+
+    wordSelection.map(word => {
+      word.cardId !== cardId 
+      ? word
+      : word.cardGuessed = true
+    })
+    this.setState((prevState)=>({
+      wordSelection
+    }))
+  }
+
+  onSubmitClue = (clueGiven) => {
+    this.setState((prevState) => ({
+      roundInfo: {
+        ...prevState.roundInfo,
+        clueGiven
+      } 
+    }))
+  }
+
+  render(){
+    return(
+      this.renderCardBoard()
+    )
+  }
+  
+  renderCardBoard() {
+    const {wordSelection, roundInfo} = this.state
+    const orangeCards = wordSelection.filter(card => card.cardColorId === 'orange')
+    const purpleCards = wordSelection.filter(card => card.cardColorId === 'purple')
+    return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+      <Text style={styles.paragraph}>
+        WordGuess
+      </Text>
+      <Text>
+        Hello {playerInfo.playerName}!
+      </Text>
+      {playerInfo.clueMaster &&
+        <WordInput
+          playerInfo= {playerInfo}
+          roundInfo= {roundInfo}
+          onSubmit = {this.onSubmitClue}
+        />
+      }
+      <Text>Clue: {roundInfo.clueGiven}</Text>
+        <TeamScore
+          cards = {orangeCards}
+          color='orange'
+        />
+
+        <TeamScore
+          cards = {purpleCards}
+          color='purple'
+        /> 
+        {wordSelection.map(word => 
+          <WordButton
+            key={word.cardId} 
+            onSelectWord={() => this.onSelectWord(word.cardId)}
+            word={word}
+            clueMaster= {playerInfo.clueMaster}/>
+          )
+          }
+      </View>
+        
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
+
+
+     
+
