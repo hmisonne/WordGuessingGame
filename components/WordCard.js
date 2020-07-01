@@ -7,10 +7,10 @@ export default function WordCard(props) {
   return (
     <View>
       {clueMaster? 
-        <TouchableOpacity
-          style={[styles.itemContainer, { backgroundColor: card.cardColorId }]}>
+        <View
+          style={[styles.itemContainerClueMaster, { backgroundColor: card.cardColorId }]}>
           <Text style={styles.itemName}>{card.name}</Text> 
-        </TouchableOpacity>
+        </View>
       :
         <TouchableOpacity
           style={!card.cardGuessed ? 
@@ -32,6 +32,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     height: 150,
+  },
+  itemContainerClueMaster: {
+    justifyContent: 'flex-end',
+    borderRadius: 5,
+    padding: 10,
+    height: 50,
   },
   itemName: {
     fontSize: 16,
