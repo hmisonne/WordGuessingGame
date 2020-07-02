@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
@@ -6,8 +7,28 @@ import WordCard from './components/WordCard'
 import WordInput from './components/WordInput'
 import {cardList, playerInfo, roundInfo} from './data'
 import TeamScore from './components/TeamScore'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator()
 
 export default class App extends React.Component {
+  
+
+  render(){
+    return(
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Word Guessing Game" component={CardBoard} />
+        </Stack.Navigator>
+      </NavigationContainer>
+
+    )
+  }
+  
+}
+
+class CardBoard extends React.Component {
   state = {
     wordSelection: cardList,
     roundInfo
@@ -33,22 +54,12 @@ export default class App extends React.Component {
       } 
     }))
   }
-
   render(){
-    return(
-      this.renderCardBoard()
-    )
-  }
-  
-  renderCardBoard() {
     const {wordSelection, roundInfo} = this.state
     const orangeCards = wordSelection.filter(card => card.cardColorId === 'orange')
     const purpleCards = wordSelection.filter(card => card.cardColorId === 'purple')
     return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>
-        WordGuess
-      </Text>
       <Text>
         Hello {playerInfo.playerName}!
       </Text>
@@ -64,7 +75,7 @@ export default class App extends React.Component {
           cards = {orangeCards}
           color='orange'
         />
-
+  
         <TeamScore
           cards = {purpleCards}
           color='purple'
@@ -86,6 +97,7 @@ export default class App extends React.Component {
         
     )
   }
+  
 }
 
 const styles = StyleSheet.create({
@@ -113,3 +125,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
