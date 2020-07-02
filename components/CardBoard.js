@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import Constants from 'expo-constants';
 import { FlatGrid } from 'react-native-super-grid';
 import WordCard from './WordCard'
 import WordInput from './WordInput'
 import {cardList, playerInfo, roundInfo} from '../data'
 import TeamScore from './TeamScore'
-import ClueForm from './ClueForm'
 
 export default class CardBoard extends React.Component {
     state = {
@@ -43,6 +42,13 @@ export default class CardBoard extends React.Component {
         <Text>
           Hello {playerInfo.playerName}!
         </Text>
+        <Button
+            title="New Clue"
+            onPress={() => this.props.navigation.navigate('ClueForm',{
+                roundInfo, 
+                playerInfo,
+            })}
+        />    
         {playerInfo.clueMaster &&
           <WordInput
             playerInfo= {playerInfo}

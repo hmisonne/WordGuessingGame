@@ -15,7 +15,7 @@ export default class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Word Guessing Game" component={CardBoard} />
-          <Stack.Screen name="Submit a Clue" component={ClueForm} />
+          <Stack.Screen name="ClueForm" component={ClueForm} />
         </Stack.Navigator>
       </NavigationContainer>
 
